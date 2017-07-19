@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="react native" />
+  <meta name="keywords" content="npm," />
 
 
 
@@ -93,13 +93,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="松下菲勒">
-<meta property="og:url" content="https://yuzhongma.github.io/archives/index.html">
+<meta name="description" content="在使用 electron 构建桌面应用的时候，在 package.json 里面的 scripts 字段是这样的123&amp;quot;scripts&amp;quot;: &amp;#123;  &amp;quot;start&amp;quot;: &amp;quot;electron .&amp;quot;&amp;#125;, 我们可以执行 npm start ，那么它就会执行 electron . 这个命令。那么如果我们直接执行 electron .">
+<meta name="keywords" content="npm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="npm 的一个小细节">
+<meta property="og:url" content="https://yuzhongma.github.io/2017/05/20/npm-two/index.html">
 <meta property="og:site_name" content="松下菲勒">
+<meta property="og:description" content="在使用 electron 构建桌面应用的时候，在 package.json 里面的 scripts 字段是这样的123&amp;quot;scripts&amp;quot;: &amp;#123;  &amp;quot;start&amp;quot;: &amp;quot;electron .&amp;quot;&amp;#125;, 我们可以执行 npm start ，那么它就会执行 electron . 这个命令。那么如果我们直接执行 electron .">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-07-19T09:57:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="松下菲勒">
+<meta name="twitter:title" content="npm 的一个小细节">
+<meta name="twitter:description" content="在使用 electron 构建桌面应用的时候，在 package.json 里面的 scripts 字段是这样的123&amp;quot;scripts&amp;quot;: &amp;#123;  &amp;quot;start&amp;quot;: &amp;quot;electron .&amp;quot;&amp;#125;, 我们可以执行 npm start ，那么它就会执行 electron . 这个命令。那么如果我们直接执行 electron .">
 
 
 
@@ -127,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="https://yuzhongma.github.io/archives/"/>
+  <link rel="canonical" href="https://yuzhongma.github.io/2017/05/20/npm-two/"/>
 
 
 
 
 
-  <title>归档 | 松下菲勒</title>
+  <title>npm 的一个小细节 | 松下菲勒</title>
   
 
 
@@ -168,7 +173,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -272,403 +277,180 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 22 篇日志。 继续努力。
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yuzhongma.github.io/2017/05/20/npm-two/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mlj">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="松下菲勒">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">npm 的一个小细节</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-20T01:25:24+08:00">
+                2017-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
-      
 
+      
+        <p>在使用 electron 构建桌面应用的时候，在 package.json 里面的 scripts 字段是这样的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&quot;scripts&quot;: &#123;</div><div class="line">  &quot;start&quot;: &quot;electron .&quot;</div><div class="line">&#125;,</div></pre></td></tr></table></figure></p>
+<p>我们可以执行 npm start ，那么它就会执行 <code>electron .</code> 这个命令。<br>那么如果我们直接执行 <code>electron .</code><br>由于我们没有将 electron 加入到全局，所以不行。<br>那么为什么 npm start 可以执行呢？</p>
+<a id="more"></a>
+<p>这就涉及到 npm run 命令的一个小细节了。<br>npm run xxx 可以执行 package.json 里面 scripts 里面对应的命令，并且是 shell 脚本。但是在执行的时候有一个小处理：</p>
+<p><strong>npm run 新建的这个 shell ，会将当前目录的 node_modules/.bin 子目录加入 PATH 变量，执行结束后，再将 PATH 变量恢复原样。</strong></p>
+<p>这就解释了，没有安装全局的 electron ，直接运行 <code>electron .</code> 是不行的，但是使用 <code>npm start</code> 来运行 <code>electron .</code> 可以。</p>
+<p><strong>下面介绍一个使用 npm 的实践：</strong><br>很多朋友使用 hexo 来构建博客；hexo 是基于 Node.js 产物，用它发表博文，很是方便；你只需 hexo clean, hexo g, hexo d三个命令即可；而且每一个命令必须等待前一个命令运行完成。文章数据一多，一套命令打下来，也得 20s+；如果略懂 npm，在 package.js 中加入点命名，例如像这样；<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">"scripts"</span>: &#123;</div><div class="line">  <span class="string">"start"</span>: <span class="string">"sudo hexo clean &amp;&amp; sudo hexo g &amp;&amp; sudo gulp &amp;&amp; sudo hexo d"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>那么 只需运行 npm start 就好，可将时间消耗缩短至 2s节省时间虽说不多，却也是数量级的提升，而且代价只是那么小，并一劳永逸。所以有必要对此。</p>
+<p>关于 npm 的详细学习，可以查看：<a href="https://neveryu.github.io/2017/04/10/npm/" target="_blank" rel="external">npm 全面介绍</a></p>
+
+      
+    </div>
+
+    <div>
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/npm/" rel="tag"># npm</a>
+          
         </div>
       
+
+      
+      
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/01/gulp/" rel="next" title="gulp 详解与使用">
+                <i class="fa fa-chevron-left"></i> gulp 详解与使用
+              </a>
+            
+          </div>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          <span class="post-nav-divider"></span>
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/08/service-worker/" itemprop="url">
-              
-                <span itemprop="name">使用 Service worker 实现加速/离线访问博客</span>
-              
-            </a>
-        
-      </h2>
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/08/service-worker/" rel="prev" title="使用 Service worker 实现加速/离线访问博客">
+                使用 Service worker 实现加速/离线访问博客 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-08T11:25:24+08:00"
-              content="2017-06-08" >
-          06-08
-        </time>
-      </div>
-
-    </header>
+      
+      
+    </footer>
   </article>
 
 
 
-    
-
+    <div class="post-spread">
       
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/20/npm-two/" itemprop="url">
-              
-                <span itemprop="name">npm 的一个小细节</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-20T01:25:24+08:00"
-              content="2017-05-20" >
-          05-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/01/gulp/" itemprop="url">
-              
-                <span itemprop="name">gulp 详解与使用</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-01T01:25:24+08:00"
-              content="2017-05-01" >
-          05-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/10/npm/" itemprop="url">
-              
-                <span itemprop="name">npm 全面介绍</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-10T03:25:24+08:00"
-              content="2017-04-10" >
-          04-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/20/amd-cmd/" itemprop="url">
-              
-                <span itemprop="name">AMD，CMD 规范详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-20T03:25:24+08:00"
-              content="2017-03-20" >
-          03-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/07/commonjs/" itemprop="url">
-              
-                <span itemprop="name">CommonJS 详细介绍</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-07T13:25:24+08:00"
-              content="2017-03-07" >
-          03-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/02/28/memory-leak/" itemprop="url">
-              
-                <span itemprop="name">如何解决内存泄漏引发的血案</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-02-28T01:01:00+08:00"
-              content="2017-02-28" >
-          02-28
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/02/18/js-memory-management-and-gc/" itemprop="url">
-              
-                <span itemprop="name">JavaScript 内存管理 & 垃圾回收机制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-02-18T13:25:24+08:00"
-              content="2017-02-18" >
-          02-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/02/14/why-we-dropped-zepto/" itemprop="url">
-              
-                <span itemprop="name">【转】为什么我们放弃了 Zepto</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-02-14T01:25:24+08:00"
-              content="2017-02-14" >
-          02-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/02/11/respond-js/" itemprop="url">
-              
-                <span itemprop="name">polyfill — Respond.js</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-02-11T23:25:24+08:00"
-              content="2017-02-11" >
-          02-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-
+    </div>
+  </div>
 
 
           </div>
@@ -879,11 +661,9 @@
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
 
 
   

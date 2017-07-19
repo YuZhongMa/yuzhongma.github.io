@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="react native" />
+  <meta name="keywords" content="zepto," />
 
 
 
@@ -93,13 +93,15 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="松下菲勒">
-<meta property="og:url" content="https://yuzhongma.github.io/archives/index.html">
+<meta name="keywords" content="zepto">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【转】为什么我们放弃了 Zepto">
+<meta property="og:url" content="https://yuzhongma.github.io/2017/02/14/why-we-dropped-zepto/index.html">
 <meta property="og:site_name" content="松下菲勒">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-07-19T09:57:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="松下菲勒">
+<meta name="twitter:title" content="【转】为什么我们放弃了 Zepto">
 
 
 
@@ -127,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://yuzhongma.github.io/archives/"/>
+  <link rel="canonical" href="https://yuzhongma.github.io/2017/02/14/why-we-dropped-zepto/"/>
 
 
 
 
 
-  <title>归档 | 松下菲勒</title>
+  <title>【转】为什么我们放弃了 Zepto | 松下菲勒</title>
   
 
 
@@ -168,7 +170,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -272,403 +274,185 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 22 篇日志。 继续努力。
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yuzhongma.github.io/2017/02/14/why-we-dropped-zepto/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mlj">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="松下菲勒">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【转】为什么我们放弃了 Zepto</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-14T01:25:24+08:00">
+                2017-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/综合/" itemprop="url" rel="index">
+                    <span itemprop="name">综合</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
-      
 
+      
+        <!-- <img src="http://i2.muimg.com/567571/fae45a374015a1c2.png" alt="summary-img-src-zepto"> -->
+<a id="more"></a>
+<blockquote>
+<p><a href="http://foundation.zurb.com/" target="_blank" rel="external">Foundation</a> 是 <a href="http://zurb.com/" target="_blank" rel="external">Zurb</a> 公司开源的一套前端框架，和 <a href="http://www.bootcss.com/" target="_blank" rel="external">Bootstrap</a> 类似。</p>
+</blockquote>
+<p>在漆深的洞中，聪明、强壮的雪人（雪人 – Yeti – 是 Foundation 框架的吉祥物，这里其实是暗指 Foundation 框架）听到人们的询问“Zepto 去哪儿了？”。</p>
+<p>回顾 Foundation 版本 4 开发时，我们考虑采用 Zepto 库（jQuery 可选），主要是由于 Zepto 体积小、加载速度快。</p>
+<p>随着时间的推移，我们发现文件体积的大小根本和执行效率没有任何比例关系。当然，必须承认，Zepto 下载的确很快。但是，一旦下载到浏览器之后，它并不像 jQuery 一样执行速度快。并且，很多第三方插件都依赖 jQuery，不支持 Zepto – 实际上，我们发现某些第三方插件和 Zepto 有冲突。</p>
+<p>对于我们来讲，维护多套代码很不容易。例如，Zepto 缺少合适的高度计算函数，这让某些栅格（grid）的计算变得很困难。</p>
+<p>为了解决这些问题，我们发现解决办法其实极其简单：基于 jQuery 2 构建 Foundation 版本 5。除了获得更好的执行速度和广泛的业界支持外，jQuery 2 的文档更优秀、支持也同样更好。jQuery 的 API 在各个版本是兼容的。</p>
+<p>等一等，为了把问题讲清楚，我们还是先假定 Zepto 的执行速度可能比 jQeury 快。我们不希望犯同样的错误，因此，我们将 Zepto 和 jQuery 2 进行对比测试，测试结果是：<a href="http://jsperf.com/zepto-vs-jquery-2013/25" target="_blank" rel="external">jQuery 2 每秒执行的操作次数比 Zepto 多</a>。这让 Foundation 版本 5 的执行效率更高，同时让所有用户感受到更好的体验。</p>
+<p>最后，我们希望帮助大家更快速地设计优秀的产品 – 这次，我们的一点儿改变，让 Foundation 这个前端框架的速度得到大幅提升！</p>
+<h2 id="译者总结："><a href="#译者总结：" class="headerlink" title="译者总结："></a>译者总结：</h2><p>在开源的世界中，充斥着大量的开源项目，但是，只有少部分的开源项目为广大开发者所熟知并积极使用。一个好的开源项目必须有一个强大的社区和一批积极的贡献者，jQuery 就是其中一个幸运儿。</p>
+<p>原文地址：<a href="http://zurb.com/article/1293/why-we-dropped-zepto" target="_blank" rel="external">http://zurb.com/article/1293/why-we-dropped-zepto</a></p>
+
+      
+    </div>
+
+    <div>
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/zepto/" rel="tag"># zepto</a>
+          
         </div>
       
+
+      
+      
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/11/respond-js/" rel="next" title="polyfill — Respond.js">
+                <i class="fa fa-chevron-left"></i> polyfill — Respond.js
+              </a>
+            
+          </div>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          <span class="post-nav-divider"></span>
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/08/service-worker/" itemprop="url">
-              
-                <span itemprop="name">使用 Service worker 实现加速/离线访问博客</span>
-              
-            </a>
-        
-      </h2>
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/18/js-memory-management-and-gc/" rel="prev" title="JavaScript 内存管理 & 垃圾回收机制">
+                JavaScript 内存管理 & 垃圾回收机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-08T11:25:24+08:00"
-              content="2017-06-08" >
-          06-08
-        </time>
-      </div>
-
-    </header>
+      
+      
+    </footer>
   </article>
 
 
 
-    
-
+    <div class="post-spread">
       
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/20/npm-two/" itemprop="url">
-              
-                <span itemprop="name">npm 的一个小细节</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-20T01:25:24+08:00"
-              content="2017-05-20" >
-          05-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/01/gulp/" itemprop="url">
-              
-                <span itemprop="name">gulp 详解与使用</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-01T01:25:24+08:00"
-              content="2017-05-01" >
-          05-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/10/npm/" itemprop="url">
-              
-                <span itemprop="name">npm 全面介绍</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-10T03:25:24+08:00"
-              content="2017-04-10" >
-          04-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/20/amd-cmd/" itemprop="url">
-              
-                <span itemprop="name">AMD，CMD 规范详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-20T03:25:24+08:00"
-              content="2017-03-20" >
-          03-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/07/commonjs/" itemprop="url">
-              
-                <span itemprop="name">CommonJS 详细介绍</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-07T13:25:24+08:00"
-              content="2017-03-07" >
-          03-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/02/28/memory-leak/" itemprop="url">
-              
-                <span itemprop="name">如何解决内存泄漏引发的血案</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-02-28T01:01:00+08:00"
-              content="2017-02-28" >
-          02-28
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/02/18/js-memory-management-and-gc/" itemprop="url">
-              
-                <span itemprop="name">JavaScript 内存管理 & 垃圾回收机制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-02-18T13:25:24+08:00"
-              content="2017-02-18" >
-          02-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/02/14/why-we-dropped-zepto/" itemprop="url">
-              
-                <span itemprop="name">【转】为什么我们放弃了 Zepto</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-02-14T01:25:24+08:00"
-              content="2017-02-14" >
-          02-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/02/11/respond-js/" itemprop="url">
-              
-                <span itemprop="name">polyfill — Respond.js</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-02-11T23:25:24+08:00"
-              content="2017-02-11" >
-          02-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-
+    </div>
+  </div>
 
 
           </div>
@@ -696,8 +480,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpeg"
@@ -759,6 +552,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#译者总结："><span class="nav-number">1.</span> <span class="nav-text">译者总结：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -879,11 +688,9 @@
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
 
 
   
