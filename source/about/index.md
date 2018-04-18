@@ -35,8 +35,6 @@ comments: false
 
 大家可以称呼我为:"松下菲勒"
 
-email: 821438050@qq.com
+email: songxiafeile@163.com
 
 git: https://github.com/yuzhongma
-
-QQ:  821438050 (注明博客)
