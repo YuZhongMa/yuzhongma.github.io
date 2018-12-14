@@ -22,6 +22,4 @@ hello，everyone
 
 # 联系方式
 
-"松下菲勒"
-
 email: 821438050@qq.com
