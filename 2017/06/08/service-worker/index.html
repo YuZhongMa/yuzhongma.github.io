@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Service-worker,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="有一个困扰 web 用户多年的难题——丢失网络连接。即使是世界上最好的 web app，如果下载不了它，也是非常糟糕的体验。如今虽然已经有很多种技术去尝试着解决这一问题。而随着离线页面的出现，一些问题已经得到了解决。有一个叫做 APP Cache 的 API 可以提供离线体验，但它的问题比较多。最重要的问题是，仍然没有一个好的统筹机制对资源缓存和自定义的网络请求进行控制。 Service work">
+<meta name="keywords" content="Service-worker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Service worker 实现加速&#x2F;离线访问博客">
+<meta property="og:url" content="https://yuzhongma.github.io/2017/06/08/service-worker/index.html">
+<meta property="og:site_name" content="松下菲勒">
+<meta property="og:description" content="有一个困扰 web 用户多年的难题——丢失网络连接。即使是世界上最好的 web app，如果下载不了它，也是非常糟糕的体验。如今虽然已经有很多种技术去尝试着解决这一问题。而随着离线页面的出现，一些问题已经得到了解决。有一个叫做 APP Cache 的 API 可以提供离线体验，但它的问题比较多。最重要的问题是，仍然没有一个好的统筹机制对资源缓存和自定义的网络请求进行控制。 Service work">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yuzhongma.github.io/images/service-worker-1.png">
+<meta property="og:image" content="https://yuzhongma.github.io/images/service-worker-2.png">
+<meta property="og:image" content="https://yuzhongma.github.io/images/service-worker-3.png">
+<meta property="og:image" content="https://yuzhongma.github.io/images/service-worker-4.png">
+<meta property="og:image" content="https://yuzhongma.github.io/images/service-worker-5.png">
+<meta property="og:updated_time" content="2018-12-14T14:47:53.921Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 Service worker 实现加速&#x2F;离线访问博客">
+<meta name="twitter:description" content="有一个困扰 web 用户多年的难题——丢失网络连接。即使是世界上最好的 web app，如果下载不了它，也是非常糟糕的体验。如今虽然已经有很多种技术去尝试着解决这一问题。而随着离线页面的出现，一些问题已经得到了解决。有一个叫做 APP Cache 的 API 可以提供离线体验，但它的问题比较多。最重要的问题是，仍然没有一个好的统筹机制对资源缓存和自定义的网络请求进行控制。 Service work">
+<meta name="twitter:image" content="https://yuzhongma.github.io/images/service-worker-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yuzhongma.github.io/2017/06/08/service-worker/">
+
+
+
+
+
+  <title>使用 Service worker 实现加速/离线访问博客 | 松下菲勒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">松下菲勒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">myBlog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yuzhongma.github.io/2017/06/08/service-worker/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mlj">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="松下菲勒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用 Service worker 实现加速/离线访问博客</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-08T11:25:24+08:00">
+                2017-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>有一个困扰 web 用户多年的难题——丢失网络连接。即使是世界上最好的 web app，如果下载不了它，也是非常糟糕的体验。如今虽然已经有很多种技术去尝试着解决这一问题。而随着<strong>离线页面</strong>的出现，一些问题已经得到了解决。有一个叫做 APP Cache 的 API 可以提供离线体验，但它的问题比较多。最重要的问题是，仍然没有一个好的统筹机制对资源缓存和自定义的网络请求进行控制。</p>
+<h1 id="Service-worker"><a href="#Service-worker" class="headerlink" title="Service worker"></a>Service worker</h1><p>于是 HTML5 提出了 Service Worker，Service worker 提供了很多新的能力，使得 web app 拥有与 nativeapp 相同的离线体验、消息推送体验。</p>
+<a id="more"></a>
+<p>Service worker 是一段脚本，它有能力往我们的浏览器中写入缓存，过滤网络请求，将缓存内容作为网络响应结果输出。<br><strong>带来的效果是显而易见的：</strong></p>
+<p id="div-border-top-green">1、当我们缓存了某些资源的时候，当我们再次请求该资源的时候，我们便可以使用缓存的内容，这样的话，就可以减少网络请求了，网站的打开速度明显提升。<br>2、如果我们将网站所需的资源缓存下来了以后，这个时候即使计算机没有网络，依然可以打开这个网站，即离线访问。<br></p>
+
+<h1 id="Service-worker-使用场景"><a href="#Service-worker-使用场景" class="headerlink" title="Service worker 使用场景"></a>Service worker 使用场景</h1><p>现在很流行基于 GitHub page 和 markdown 的静态 blog ，非常适合技术的思维和习惯，针对不同的语言都有一些优秀的静态 blog 系统出现，如 Jekyll/Ruby，Pelican/Python，Hexo/NodeJs ，由于静态内容的特性非常适合做缓存来加速页面的访问，就利用 Service worker 来实现加速，结果是除了 PageSpeed，CDN 这些常见的服务器和网络加速之外，通过客户端实现了更好的访问体验。</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><p>你现在可以断开你的网络，或者用浏览器中模拟无网络的情景，继续访问本站。<br><i style="color:red;">如何在浏览器中模拟无网络环境？(在 Network 中选择 offline)</i><br><img src="/images/service-worker-1.png" alt=""></p>
+<h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><h2 id="注册-Service-worker"><a href="#注册-Service-worker" class="headerlink" title="注册 Service worker"></a>注册 Service worker</h2><p>要安装 Service worker，你需要在你的页面上注册它。下面的代码会告诉浏览器你的 Service worker 脚本放在哪里<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="keyword">if</span> (navigator.serviceWorker) &#123;</span><br><span class="line">    <span class="comment">// 注册Service Worker scope表示作用的页面的path</span></span><br><span class="line">    <span class="comment">// register函数返回Promise</span></span><br><span class="line">    navigator.serviceWorker.register(<span class="string">'/service-worker.js'</span>,&#123;<span class="attr">scope</span>: <span class="string">'/'</span>&#125;) </span><br><span class="line">      .then(<span class="function"><span class="keyword">function</span> (<span class="params">registration</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(registration);</span><br><span class="line">      &#125;)</span><br><span class="line">      .catch(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.error(e);</span><br><span class="line">      &#125;)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Service Worker is not supported in this browser.'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>以上代码会先检测 Service worker 在浏览器中是否可用，可用的话一个 Service worker（/service-worker.js）将被注册，如果这个 Service worker 已经注册过了，浏览器这会忽略以上代码。<br><code>{scope: &#39;/&#39;}</code> 表示 Service worker 作用的范围。<br>需要说明的是 service-worker.js 文件被放在这个域的根目录下，这意味着 service worker 是跟网站同源的。换句话说，这个 service worker 将会获取到这个域下的所有 fetch 事件。<br>如果 service worker 文件注册到 /example/service-worker.js ，那么 service worker 只能收到 /example/ 路径下的 fetch 事件（比如： /example/page1/, /example/page2/）。<br>如果 service worker 文件注册到根目录下 /service-worker.js ，同时 <code>{scope: &#39;/example&#39;}</code> ，那么 service worker 也只能收到 /example/ 路径下的 fetch 事件。</p>
+<p>service-worker.js 文件，我建议是放在网站的跟目录下，scope 不作修改，这样 service worker 拥有最大的使用范围。</p>
+<h2 id="安装-Service-worker"><a href="#安装-Service-worker" class="headerlink" title="安装 Service worker"></a>安装 Service worker</h2><p><img src="/images/service-worker-2.png" alt=""></p>
+<p><a href="https://neveryu.github.io/service-worker.js" target="_blank" rel="noopener">我的 service-worker.js</a><br>关于这个 service-worker.js 怎么写，具体可以查看 API ，<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API" target="_blank" rel="noopener">MDN Service Worker API</a>。</p>
+<p id="div-border-left-red">注意：将 service-worker.js 放到域的根目录下哦，这样 Service worker 才能拥有最大的使用范围。</p>
+
+<p>现在你可以到 chrome://inspect/#service-workers 这里，检查 service worker 是否对你的网站启用了。<br>或者在 chrome://serviceworker-internals/ 中管理你的 Service worker 。<br>或者在浏览器的开发者工具中也可以详细的查看 service worker 的缓存。<br><img src="/images/service-worker-3.png" alt=""></p>
+<h1 id="Service-worker-核心-API"><a href="#Service-worker-核心-API" class="headerlink" title="Service worker 核心 API"></a>Service worker 核心 API</h1><p><img src="/images/service-worker-4.png" alt=""></p>
+<h2 id="install"><a href="#install" class="headerlink" title="install"></a>install</h2><p><img src="/images/service-worker-5.png" alt=""><br>install 是安装一个 service worker 缓存，使用方法可以是这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Set the callback for the install step</span></span><br><span class="line">self.addEventListener(<span class="string">'install'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Perform install steps</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>在 install 的 callback 中，我们需要执行一下步骤：<br>1、开启一个缓存<br>2、缓存我们的文件<br>3、确定所有的资源是否要被缓存</p>
+<h2 id="fetch"><a href="#fetch" class="headerlink" title="fetch"></a>fetch</h2><p>fetch 用来监听用户的网络请求，并给出回应。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(<span class="string">'fetch'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  event.respondWith(</span><br><span class="line">    caches.match(event.request)</span><br><span class="line">      .then(<span class="function"><span class="keyword">function</span>(<span class="params">response</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// Cache hit - return response</span></span><br><span class="line">        <span class="keyword">if</span> (response) &#123;</span><br><span class="line">          <span class="keyword">return</span> response;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> fetch(event.request);</span><br><span class="line">      &#125;</span><br><span class="line">    )</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="activate"><a href="#activate" class="headerlink" title="activate"></a>activate</h2><p>你的 Service worker 总会有要更新的时候。在那时，你需要按照一下步骤来更新：<br>1、更新你 service worker 的 JavaScript 文件。<br>2、更新后的 service worker 启动并触发 install 事件。<br>3、此时，当前页面生效的依然是老版本的 service worker ，新的 service worker 会进入“waitting”状态。<br>4、当页面关闭后，来的 service worker 会被干掉，新的 service worker 接管页面。<br>5、一旦新的 service worker 生效后会触发 active 事件。</p>
+<p>一个典型的 activete 事件：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(<span class="string">'activate'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123; </span><br><span class="line"><span class="comment">// 监听worker的activate事件</span></span><br><span class="line">  event.waitUntil( <span class="comment">// 延迟activate事件直到</span></span><br><span class="line">    caches.keys().then(<span class="function"><span class="keyword">function</span>(<span class="params">keys</span>)</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.all(keys.map(<span class="function"><span class="keyword">function</span>(<span class="params">key, i</span>)</span>&#123; <span class="comment">// 清除旧版本缓存</span></span><br><span class="line">        <span class="keyword">if</span>(key !== CACHE_VERSION)&#123;</span><br><span class="line">          <span class="keyword">return</span> caches.delete(keys[i]);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;))</span><br><span class="line">    &#125;)</span><br><span class="line">  )</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h1 id="其他使用场景"><a href="#其他使用场景" class="headerlink" title="其他使用场景"></a>其他使用场景</h1><p>在网站 A 中，隐藏一个 iframe ，在这个 iframe 中注册一个 service worker ，这个 service worker 会缓存网站 B 所需的资源。<br>从未访问过网站 B，但网站已经在你的设备上预加载过了，一切仅仅因为你访问过网站 A。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"https://B.com/iframe.html"</span> <span class="attr">style</span>=<span class="string">"width: 0; height: 0; border: 0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">"en"</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">&lt;title&gt;HTML5 For Web Designers&lt;<span class="regexp">/title&gt;</span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">if ('serviceWorker' in navigator) &#123;</span></span><br><span class="line"><span class="regexp">  navigator.serviceWorker.register('/</span>serviceworker.js<span class="string">');</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Service-worker/" rel="tag"># Service-worker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/20/npm-two/" rel="next" title="npm 的一个小细节">
+                <i class="fa fa-chevron-left"></i> npm 的一个小细节
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/20/React-Native-With-Redux-Refactor/" rel="prev" title="再谈React-Native With Redux">
+                再谈React-Native With Redux <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/avatar/avatar.jpeg" alt="mlj">
+            
+              <p class="site-author-name" itemprop="name">mlj</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Service-worker"><span class="nav-number">1.</span> <span class="nav-text">Service worker</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Service-worker-使用场景"><span class="nav-number">2.</span> <span class="nav-text">Service worker 使用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例"><span class="nav-number">3.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用方法"><span class="nav-number">4.</span> <span class="nav-text">使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注册-Service-worker"><span class="nav-number">4.1.</span> <span class="nav-text">注册 Service worker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-Service-worker"><span class="nav-number">4.2.</span> <span class="nav-text">安装 Service worker</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Service-worker-核心-API"><span class="nav-number">5.</span> <span class="nav-text">Service worker 核心 API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#install"><span class="nav-number">5.1.</span> <span class="nav-text">install</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fetch"><span class="nav-number">5.2.</span> <span class="nav-text">fetch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#activate"><span class="nav-number">5.3.</span> <span class="nav-text">activate</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他使用场景"><span class="nav-number">6.</span> <span class="nav-text">其他使用场景</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mlj</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

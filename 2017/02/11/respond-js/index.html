@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JavaScript,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Respond.js 让不支持 css3 Media Query 的浏览器包括 IE6-IE8 等其他浏览器支持媒体查询。  Respond.js 是一个快速、轻量的 polyfill，用于为 IE6-8 以及其它不支持 CSS3 Media Queries 的浏览器提供媒体查询的 min-width 和 max-width特性，实现响应式网页设计（Responsive Web Design）。">
+<meta name="keywords" content="JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="polyfill — Respond.js">
+<meta property="og:url" content="https://yuzhongma.github.io/2017/02/11/respond-js/index.html">
+<meta property="og:site_name" content="松下菲勒">
+<meta property="og:description" content="Respond.js 让不支持 css3 Media Query 的浏览器包括 IE6-IE8 等其他浏览器支持媒体查询。  Respond.js 是一个快速、轻量的 polyfill，用于为 IE6-8 以及其它不支持 CSS3 Media Queries 的浏览器提供媒体查询的 min-width 和 max-width特性，实现响应式网页设计（Responsive Web Design）。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-14T14:47:53.920Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="polyfill — Respond.js">
+<meta name="twitter:description" content="Respond.js 让不支持 css3 Media Query 的浏览器包括 IE6-IE8 等其他浏览器支持媒体查询。  Respond.js 是一个快速、轻量的 polyfill，用于为 IE6-8 以及其它不支持 CSS3 Media Queries 的浏览器提供媒体查询的 min-width 和 max-width特性，实现响应式网页设计（Responsive Web Design）。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yuzhongma.github.io/2017/02/11/respond-js/">
+
+
+
+
+
+  <title>polyfill — Respond.js | 松下菲勒</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">松下菲勒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">myBlog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yuzhongma.github.io/2017/02/11/respond-js/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mlj">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="松下菲勒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">polyfill — Respond.js</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-11T23:25:24+08:00">
+                2017-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Respond.js 让不支持 css3 Media Query 的浏览器包括 IE6-IE8 等其他浏览器支持媒体查询。</p>
+</blockquote>
+<p>Respond.js 是一个快速、轻量的 polyfill，用于为 IE6-8 以及其它不支持 CSS3 Media Queries 的浏览器提供媒体查询的 <code>min-width</code> 和 <code>max-width</code>特性，实现响应式网页设计（Responsive Web Design）。</p>
+<a id="more"></a>
+<p>响应式布局，理想状态是，对 <code>PC/移动</code> 各种终端进行响应。媒体查询的支持程度是 IE9+ 以及其他现代的浏览器，但是 IE8 在市场当中仍然占据了比较大量的市场份额，使我们不得不进行 IE 低端浏览器的考虑。那么如何在 IE6~8 浏览器中兼容响应式布局呢？<br>这里我们需要借助这样一个文件：<code>respond.js</code>.</p>
+<p>文件下载地址：<a href="respond.js">respond.js</a>.</p>
+<p>自己在阅读了官方文档之后，进行了一系列测试。友情提示各位朋友，关于 <strong>respond.js</strong> 的使用，有一些需要注意的地方，一旦不注意，在 IE6-8 中就无法显示出来。</p>
+<h1 id="插件原理"><a href="#插件原理" class="headerlink" title="插件原理"></a>插件原理</h1><p>既然要实现响应式网页，那么就需要用到媒体查询，媒体查询的核心是 <code>min-width</code> 和 <code>max-width</code>,而 IE8 以下以及一些其它的浏览器不支持这两个属性，<strong>respond.js</strong> 是怎么做的呢？</p>
+<ul>
+<li>将 <code>&lt;head&gt;</code> 中所有外部引入的CSS文件路径取出来存储到一个数组当中；</li>
+<li>遍历数组，并一个个发送 AJAX 请求；</li>
+<li>AJAX 回调后，分析 response 中的 media query 的 <code>min-width</code> 和 <code>max-width</code> 语法（注意，仅仅支持 <code>min-width</code> 和 <code>max-width</code> ），分析出 viewport 变化区间对应相应的 css 块；</li>
+<li>页面初始化时和 <code>window.resize</code> 时，根据当前 viewport 使用相应的 css 块。</li>
+</ul>
+<h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><p>考虑到 IE9 是支持 CSS3 的，所以直接在 HTML 页面的 <code>&lt;head&gt;</code> 标签中添加脚本引入即可：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"style.css"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--[if lt IE 9]&gt;</span></span><br><span class="line"><span class="comment">      &lt;script src="js/respond.js"&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="comment">    &lt;![endif]--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>讲道理，我们是应该将 js 文件放在 html 文件的最后，但是 repond.js 文件，我还是建议你将它放在 <code>&lt;head&gt;</code> 中，并且放在 css 文件的后面。越早引入越好，在 IE 下面看到页面闪屏的概率就越低，因为最初 css 会先渲染出来，如果 respond.js 加载得很后面，这时重新根据 media query 解析出来的 css 会再改变一次页面的布局等，所以看起来有闪屏的现象.</p>
+<h1 id="核心结论"><a href="#核心结论" class="headerlink" title="核心结论"></a>核心结论</h1><p>那么此时，就可以根据基本的实现思路，得到一些书写代码时要注意的地方：</p>
+<ul>
+<li>需要启动本地服务器（localhost），不能使用普通本地的url地址（file://开头）；</li>
+<li>需要外部引入 CSS 文件，将 CSS 样式书写在 style 中是无效的；</li>
+<li>由于 respond 插件是查找 CSS 文件，再进行处理，所以 respond.js 文件一定要放置在 CSS 文件的后面；</li>
+<li>另外，虽然把 respond.js 放置在 <code>&lt;head&gt;</code> 里还是在 <code>&lt;body&gt;</code> 后面都能够实现，但是建议放置在 <code>&lt;head&gt;</code> 中（具体原因在下面的文档提示中有提到）；</li>
+<li>最好不要为 CSS 设置 utf-8 的编码，使用默认（原因详见下面的文档提示部分）</li>
+</ul>
+<h1 id="文档提示"><a href="#文档提示" class="headerlink" title="文档提示"></a>文档提示</h1><p>在官方文档当中的一些提示：</p>
+<ul>
+<li>越早的引入 respond.js 文件，也就越可能避免 IE 下出现的闪屏。</li>
+<li>不支持嵌套的媒体查询。</li>
+<li>utf-8 的字符编码对 respond.js 文件的运行有影响。<br>官方API原文：<br><code>if CSS files are encoded in UTF-8 with Byte-Order-Mark, they will not work with Respond.js in IE7 or IE8.</code><br>基本含义就是：<strong>utf-8 格式的 CSS 文件字符编码会对插件造成影响</strong><br>但是在我使用 IE6-8 进行测试的时候，都能够正常显示（无论是在 css 文件中增加 charset 设置还是在 link 标签中增加 charset 设置）。因此，并不是太清楚这个位置 bug 的含义。</li>
+<li>跨域可能会出现闪屏（还没有测试，具体情况不详）</li>
+</ul>
+<h1 id="NOTE"><a href="#NOTE" class="headerlink" title="NOTE"></a>NOTE</h1><ol>
+<li><p>Respond.js 和 跨域（cross-domain） CSS 的问题<br>如果Respond.js和CSS文件被放在不同的域名或子域名下面（例如，使用CDN）时需要一些额外的设置。请参考Respond.js文档获取详细信息。</p>
+</li>
+<li><p>Internet Explorer 8 与 box-sizing<br>IE8 不能完全支持 <code>box-sizing: border-box;</code> 与 <code>min-width</code>、<code>max-width</code>、<code>min-height</code> 或 <code>max-height</code> 一同使用。由于此原因，从 Bootstrap v3.0.1 版本开始，我们不再为 <code>.container</code> 使用 <code>max-width</code>。</p>
+</li>
+<li><p>IE兼容模式<br>Bootstrap 不支持 IE 的兼容模式。为了让 IE 浏览器运行最新的渲染模式，建议将此 标签加入到你的页面中：<br><code>&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=Edge&quot;&gt;</code><br>此标签被加入到所有文档页面和案例页面中，以确保在每个被支持的 IE 浏览器中保持最好的页面展现效果。</p>
+</li>
+<li><p>Respond.js 和 @import<br>Respond.js 不支持通过 @import 引入的 CSS 文件。例如，Drupal 一般被配置为通过 @import 引入 CSS 文件，Respond.js 对其将无法起到作用。</p>
+</li>
+</ol>
+<h1 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h1><p>从 respond.js 的工作原理可以知道，它将 <code>&lt;head&gt;</code> 中所有外部引入的 CSS 文件路径取出来存储到一个数组当中；然后遍历数组，并一个个发送 AJAX 请求；可以看出这里必须依赖 ajax 请求 css 路径才能得到 css 文件中的 media query 的内容，那 ajax 的跨域问题就要解决了；</p>
+<p>由于我们的静态资源都是要放在 cdn 的，responds.js 也给出了跨域方法，即引入代理页面：</p>
+<p>//把 cross-domain/respond-proxy.html 放到cdn上<br>//把 cross-domain/respond.proxy.gif 放到当前域服务器上</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Respond.js proxy on external server --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">"http://externalcdn.com/respond-proxy.html"</span> <span class="attr">id</span>=<span class="string">"respond-proxy"</span> <span class="attr">rel</span>=<span class="string">"respond-proxy"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Respond.js redirect location on local server --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">"/path/to/respond.proxy.gif"</span> <span class="attr">id</span>=<span class="string">"respond-redirect"</span> <span class="attr">rel</span>=<span class="string">"respond-redirect"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Respond.js proxy script on local server --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/path/to/respond.proxy.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="其他的支持响应式布局的插件-css3-dediaqueries-js"><a href="#其他的支持响应式布局的插件-css3-dediaqueries-js" class="headerlink" title="其他的支持响应式布局的插件  css3-dediaqueries.js"></a>其他的支持响应式布局的插件  css3-dediaqueries.js</h1><p>css3-mediaqueries.js 支持几乎所有的 media query 的语法。会出现闪屏。并不是很推荐使用，虽然能够支持全部的 media queries,但 <code>min-width</code> 和 <code>max-width</code> 其实就可以满足我们对响应式布局的需要。</p>
+<h1 id="补充一点"><a href="#补充一点" class="headerlink" title="补充一点"></a>补充一点</h1><p>if CSS files are encoded in UTF-8 with Byte-Order-Mark,they will not work with Repond.js in IE7 or IE8.</p>
+<p>也就是说保存格式应该是 utf-8 无 BOM 格式，BOM 会影响程序对文档的处理，正常的 utf-8 文档应该没事。</p>
+<h1 id="Tips-1"><a href="#Tips-1" class="headerlink" title="Tips"></a>Tips</h1><p><strong>always link stylesheets or write inline CSS before js scripts.</strong></p>
+<p>Respond.js on Github： <a href="https://github.com/scottjehl/Respond" target="_blank" rel="noopener">https://github.com/scottjehl/Respond</a>.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/18/html5shiv/" rel="next" title="腻子脚本 — HTML5Shiv">
+                <i class="fa fa-chevron-left"></i> 腻子脚本 — HTML5Shiv
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/14/why-we-dropped-zepto/" rel="prev" title="【转】为什么我们放弃了 Zepto">
+                【转】为什么我们放弃了 Zepto <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/avatar/avatar.jpeg" alt="mlj">
+            
+              <p class="site-author-name" itemprop="name">mlj</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#插件原理"><span class="nav-number">1.</span> <span class="nav-text">插件原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用方法"><span class="nav-number">2.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#核心结论"><span class="nav-number">3.</span> <span class="nav-text">核心结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文档提示"><span class="nav-number">4.</span> <span class="nav-text">文档提示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NOTE"><span class="nav-number">5.</span> <span class="nav-text">NOTE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tips"><span class="nav-number">6.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他的支持响应式布局的插件-css3-dediaqueries-js"><span class="nav-number">7.</span> <span class="nav-text">其他的支持响应式布局的插件  css3-dediaqueries.js</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#补充一点"><span class="nav-number">8.</span> <span class="nav-text">补充一点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tips-1"><span class="nav-number">9.</span> <span class="nav-text">Tips</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mlj</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
